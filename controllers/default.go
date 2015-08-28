@@ -188,49 +188,71 @@ func (c *MesssageController) Generate() {
 	*/
 }
 
+func IncreaseSeq(seq byte) byte {
+	if seq == 0x39 {
+		return 0x30
+	}
+	return seq + 1
+}
+
 func (c *MesssageController) KeepAlive() {
 	count := 0
 	var sequence byte = 0x30
-	var ack []byte
+	//	var ack []byte
+	// open session
 	for count < 100 {
+		if count == 0 {
+			var rs ftprotocol.RequestSession
+			rs.SessionKey = []byte{0x46, 0x46}
+			rs.MessageID = []byte{0x31, 0x31}
+			rs.Sequence = sequence
+			rs.DeviceID = 1
+			rs.ProtocolVersion = 0x2728
+			if count == 0 {
+				rs.NoAck = true
+			}
 
-		var rs ftprotocol.RequestSession
-		rs.SessionKey = []byte{0x46, 0x46}
-		rs.MessageID = []byte{0x31, 0x31}
-		rs.Sequence = 0x30
-		rs.DeviceID = 1
-		rs.ProtocolVersion = 0x2728
+			input := rs.Message()
 
-		input := rs.Message()
+			output := connection.Sender(input)
+			beego.Debug(output)
+			//		sequence = IncreaseSeq(sequence)
 
-		output := connection.Sender(input)
-		beego.Debug(output)
+			if len(output) > 50 {
+				var res ftprotocol.RequestSessionResponse
+				res.Parse(output)
+				//		sequence = res.Sequence
+				beego.Debug(res)
 
-		if len(output) > 10000 {
-			var res ftprotocol.RequestSessionResponse
-			res.Parse(output)
-			sequence = res.Sequence
-			beego.Debug(res)
+			}
+
+			beego.Debug("sequence : ", sequence)
+
+			if len(output) < 10 {
+				if output[0] == 0x15 {
+					//			sequence = 0x30
+				}
+
+			}
+
+			//			ack = []byte{0x06, sequence}
+			//			connection.Sender(ack)
+			//			beego.Debug(output)
+
 		}
 
-		ack = []byte{0x06, sequence}
-		connection.Sender(ack)
-		beego.Debug(output)
+		var k ftprotocol.KeepAlive
+		k.Sequence = sequence
+		k.SessionKey = []byte{0x46, 0x46}
+		k.MessageID = []byte{0x30, 0x30}
+		kinput := k.Message()
+		koutput := connection.Sender(kinput)
+		beego.Debug(koutput)
+		sequence = IncreaseSeq(sequence)
 
-		// open session
-
+		//		ack = []byte{0x06, sequence}
+		//		connection.Sender(ack)
 		/*
-			var k ftprotocol.KeepAlive
-			k.Sequence = sequence
-			k.SessionKey = []byte{0x46, 0x46}
-			k.MessageID = []byte{0x30, 0x30}
-			kinput := k.Message()
-			koutput := connection.Sender(kinput)
-			beego.Debug(koutput)
-
-			ack = []byte{0x06, sequence}
-			connection.Sender(ack)
-
 			var nr ftprotocol.DeviceNameRequest
 			nr.Sequence = sequence
 			nr.SessionKey = []byte{0x46, 0x46}
@@ -238,11 +260,46 @@ func (c *MesssageController) KeepAlive() {
 			ninput := nr.Message()
 			noutput := connection.Sender(ninput)
 			beego.Debug(noutput)
-
-			ack = []byte{0x06, sequence}
-			connection.Sender(ack)
+			sequence = IncreaseSeq(sequence)
 		*/
+		var gs ftprotocol.GetSensor
+		gs.Sequence = sequence
+		gs.SessionKey = []byte{0x46, 0x46}
+		gs.MessageID = []byte{0x33, 0x42}
+		gs.IsBroadcast = true
+		gs.Broadcastperiod = 100
+		gs.IsAllSensorData = true
+		ginput := gs.Message()
+		goutput := connection.Sender(ginput)
+		beego.Debug(goutput)
+		sequence = IncreaseSeq(sequence)
+
+		var gcd ftprotocol.GetActivationHistogram
+		gcd.Sequence = sequence
+		gcd.SessionKey = []byte{0x46, 0x46}
+		gcd.MessageID = []byte{0x32, 0x42}
+		gcdinput := gcd.Message()
+		gcdoutput := connection.Sender(gcdinput)
+		beego.Debug(gcdoutput)
+		sequence = IncreaseSeq(sequence)
+
+		/*
+			var gcd ftprotocol.GetCriticalData
+			gcd.Sequence = sequence
+			gcd.SessionKey = []byte{0x46, 0x46}
+			gcd.MessageID = []byte{0x33, 0x37}
+			gcd.DataStoreNameSize = true
+
+			ginput := gcd.Message()
+			goutput := connection.Sender(ginput)
+			beego.Debug(goutput)
+			sequence = IncreaseSeq(sequence)
+		*/
+		//		ack = []byte{0x06, sequence}
+		//		connection.Sender(ack)
+
 		count = count + 1
+
 		time.Sleep(time.Microsecond * 100)
 	}
 
