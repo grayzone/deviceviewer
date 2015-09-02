@@ -3,12 +3,14 @@ package controllers
 import (
 	"encoding/hex"
 	"encoding/json"
-	"github.com/astaxie/beego"
-	"github.com/grayzone/devicemonitor/connection"
-	"github.com/grayzone/devicemonitor/ftprotocol"
+	"log"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/astaxie/beego"
+	"github.com/grayzone/devicemonitor/comm"
+	"github.com/grayzone/devicemonitor/ftprotocol"
 )
 
 type MainController struct {
@@ -24,7 +26,7 @@ type SerialController struct {
 }
 
 func (c *SerialController) OpenSerial() {
-	err := connection.OpenSerial()
+	err := comm.OpenSerial()
 	var result string
 	if err != nil {
 		result = err.Error()
@@ -35,7 +37,7 @@ func (c *SerialController) OpenSerial() {
 }
 
 func (c *SerialController) CloseSerial() {
-	err := connection.CloseSerial()
+	err := comm.CloseSerial()
 	var result string
 	if err != nil {
 		result = err.Error()
@@ -50,7 +52,7 @@ func (c *SerialController) SendMessage() {
 
 	in, _ := hex.DecodeString(input)
 
-	out := connection.Sender(in)
+	out := comm.Sender(in)
 
 	output := hex.EncodeToString(out)
 
@@ -200,29 +202,34 @@ func (c *MesssageController) KeepAlive() {
 	var sequence byte = 0x30
 	//	var ack []byte
 	// open session
-	for count < 100 {
+	for count < 1000 {
 		if count == 0 {
 			var rs ftprotocol.RequestSession
 			rs.SessionKey = []byte{0x46, 0x46}
 			rs.MessageID = []byte{0x31, 0x31}
 			rs.Sequence = sequence
-			rs.DeviceID = 1
-			rs.ProtocolVersion = 0x2728
+			rs.DeviceID = 0xD8
+			rs.ProtocolVersion = 0x2729
 			if count == 0 {
 				rs.NoAck = true
 			}
 
 			input := rs.Message()
 
-			output := connection.Sender(input)
-			beego.Debug(output)
+			output := comm.Sender(input)
+			log.Printf("RECEIVE:%X", output)
+
+			//			beego.Debug(output)
 			//		sequence = IncreaseSeq(sequence)
 
 			if len(output) > 50 {
 				var res ftprotocol.RequestSessionResponse
 				res.Parse(output)
 				//		sequence = res.Sequence
-				beego.Debug(res)
+				log.Printf("%v:", res)
+				log.Println("session status : ", res.SessionStatus)
+				log.Println("device id : ", res.DeviceID)
+				log.Println("protocol version  : ", res.ProtocolVersion)
 
 			}
 
@@ -246,8 +253,8 @@ func (c *MesssageController) KeepAlive() {
 		k.SessionKey = []byte{0x46, 0x46}
 		k.MessageID = []byte{0x30, 0x30}
 		kinput := k.Message()
-		koutput := connection.Sender(kinput)
-		beego.Debug(koutput)
+		koutput := comm.Sender(kinput)
+		log.Printf("RECEIVE KeepAlive:%X", koutput)
 		sequence = IncreaseSeq(sequence)
 
 		//		ack = []byte{0x06, sequence}
@@ -270,30 +277,30 @@ func (c *MesssageController) KeepAlive() {
 		gs.Broadcastperiod = 100
 		gs.IsAllSensorData = true
 		ginput := gs.Message()
-		goutput := connection.Sender(ginput)
-		beego.Debug(goutput)
+		goutput := comm.Sender(ginput)
+		log.Printf("RECEIVE GetSensor:%X", goutput)
 		sequence = IncreaseSeq(sequence)
-
-		var gcd ftprotocol.GetActivationHistogram
-		gcd.Sequence = sequence
-		gcd.SessionKey = []byte{0x46, 0x46}
-		gcd.MessageID = []byte{0x32, 0x42}
-		gcdinput := gcd.Message()
-		gcdoutput := connection.Sender(gcdinput)
-		beego.Debug(gcdoutput)
-		sequence = IncreaseSeq(sequence)
-
 		/*
-			var gcd ftprotocol.GetCriticalData
+			var gcd ftprotocol.GetActivationHistogram
 			gcd.Sequence = sequence
 			gcd.SessionKey = []byte{0x46, 0x46}
-			gcd.MessageID = []byte{0x33, 0x37}
-			gcd.DataStoreNameSize = true
-
-			ginput := gcd.Message()
-			goutput := connection.Sender(ginput)
-			beego.Debug(goutput)
+			gcd.MessageID = []byte{0x32, 0x42}
+			gcdinput := gcd.Message()
+			gcdoutput := connection.Sender(gcdinput)
+			beego.Debug(gcdoutput)
 			sequence = IncreaseSeq(sequence)
+
+
+				var gcd ftprotocol.GetCriticalData
+				gcd.Sequence = sequence
+				gcd.SessionKey = []byte{0x46, 0x46}
+				gcd.MessageID = []byte{0x33, 0x37}
+				gcd.DataStoreNameSize = true
+
+				ginput := gcd.Message()
+				goutput := connection.Sender(ginput)
+				beego.Debug(goutput)
+				sequence = IncreaseSeq(sequence)
 		*/
 		//		ack = []byte{0x06, sequence}
 		//		connection.Sender(ack)
