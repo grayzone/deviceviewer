@@ -10,6 +10,7 @@ import (
 
 	"github.com/astaxie/beego"
 	"github.com/grayzone/devicemonitor/comm"
+	"github.com/grayzone/devicemonitor/conn"
 	"github.com/grayzone/devicemonitor/ftprotocol"
 )
 
@@ -50,19 +51,29 @@ func (c *SerialController) CloseSerial() {
 func (c *SerialController) SendMessage() {
 	input := c.GetString("input")
 
-	in, _ := hex.DecodeString(input)
+	var m conn.Message
+	m.Messagetype = conn.REQUEST
+	m.Info = input
+	m.Status = conn.NONE
+	m.InsertMessage()
 
-	out := comm.Sender(in)
-
-	output := hex.EncodeToString(out)
-
-	beego.Debug(output)
-
-	c.Ctx.WriteString(output)
+	c.Ctx.WriteString("ok")
 }
 
 type MesssageController struct {
 	beego.Controller
+}
+
+func (c *MesssageController) IsSencMessage() {
+	b, _ := c.GetBool("issend")
+	var s conn.Setting
+	s.Isconnected = b
+	err := s.UpdateIsConnected()
+	if err != nil {
+		c.Ctx.WriteString(err.Error())
+	} else {
+		c.Ctx.WriteString("ok")
+	}
 }
 
 func (c *MesssageController) Parse() {
@@ -119,12 +130,15 @@ func (c *MesssageController) Generate() {
 		//		beego.Debug("MessageID", rs.MessageID)
 		rs.Sequence = byte(c.GetString("sequence")[0])
 		//		beego.Debug("Sequence", c.GetString("sequence"), []byte(c.GetString("sequence")))
-		deviceid, _ := c.GetInt32("deviceid")
+		log.Println(c.GetString("deviceid"))
+		deviceid, _ := strconv.ParseUint(c.GetString("deviceid"), 16, 32)
+		log.Println(deviceid)
 		rs.DeviceID = uint32(deviceid)
 		beego.Debug("DeviceID", rs.DeviceID)
 		protocalver, _ := c.GetInt32("protocolver")
 		rs.ProtocolVersion = uint32(protocalver)
 		beego.Debug("ProtocolVersion", rs.ProtocolVersion)
+		rs.NoAck = true
 
 		out := rs.Message()
 		//		beego.Debug(out)

@@ -14,5 +14,7 @@ func init() {
 	beego.Router("/generate", &controllers.MesssageController{}, "POST:Generate")
 	beego.Router("/parse", &controllers.MesssageController{}, "POST:Parse")
 
+	beego.Router("/issend", &controllers.MesssageController{}, "POST:IsSencMessage")
+
 	beego.Router("/keepalive", &controllers.MesssageController{}, "POST:KeepAlive")
 }

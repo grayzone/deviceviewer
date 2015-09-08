@@ -1,4 +1,50 @@
 $(document).ready(function() {
+
+    $("#btnstart").click(function() {
+        $.ajax({
+                url: '/issend',
+                type: 'POST',
+                async: false,
+                //            dataType: 'default: Intelligent Guess (Other values: xml, json, script, or html)',
+                data: {
+                   "issend":true
+                },
+            })
+            .done(function(output) {
+     //           alert(output);
+            })
+            .fail(function() {
+                console.log("error");
+            })
+            .always(function() {
+                console.log("complete");
+            });
+
+    });
+
+    $("#btnstop").click(function() {
+        $.ajax({
+                url: '/issend',
+                type: 'POST',
+                async: false,
+                //            dataType: 'default: Intelligent Guess (Other values: xml, json, script, or html)',
+                data: {
+                    "issend":false
+                   
+                },
+            })
+            .done(function(output) {
+     //           alert(output);
+            })
+            .fail(function() {
+                console.log("error");
+            })
+            .always(function() {
+                console.log("complete");
+            });
+
+    });
+
         $("#btnopenserial").click(function() {
         input = $("#tainput").val();
         $.ajax({
@@ -67,6 +113,8 @@ $(document).ready(function() {
             });
 
     });
+
+
 
     $("#btngenerate").click(function() {
         //      input = $("#tainput").val();

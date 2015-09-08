@@ -11,17 +11,25 @@
     <a>Serial:</a>
     <button id="btnopenserial">Open</button>
     <button id="btncloseserial">Close</button><br>
+    </div>
+    <div>
+      <a>Send Message</a>
+          <button id="btnstart">Start</button>
+          <button id="btnstop">Stop</button><br>
+    </div>
+    <div>
       <a>Request</a><br>
       <a>Device ID:</a>
       <select name="deviceid" id="deviceid">
         <option value="00">ForceTriad Generator</option>
-        <option value="01" selected="true">Valleylab Exchange</option>
+        <option value="01">Valleylab Exchange</option>
+        <option value="D8" selected="true">Service Apps</option>
       </select>
       <a>Protocol Version:</a>
       <select name="protocolver" id="protocolver">
         <option value="10023">Patriot</option>
-        <option value="10024" selected="true">Triad</option>
-        <option value="30000">Test</option>
+        <option value="10024">Triad</option>
+        <option value="10025" selected="true">Test</option>
       </select>
       <br>
       <select name="messageid" id="messageid">
