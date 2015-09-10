@@ -11,10 +11,13 @@ func init() {
 	beego.Router("/openserial", &controllers.SerialController{}, "POST:OpenSerial")
 	beego.Router("/closeserial", &controllers.SerialController{}, "POST:CloseSerial")
 	beego.Router("/send", &controllers.SerialController{}, "POST:SendMessage")
+
 	beego.Router("/generate", &controllers.MesssageController{}, "POST:Generate")
 	beego.Router("/parse", &controllers.MesssageController{}, "POST:Parse")
 
 	beego.Router("/issend", &controllers.MesssageController{}, "POST:IsSencMessage")
 
 	beego.Router("/keepalive", &controllers.MesssageController{}, "POST:KeepAlive")
+
+	beego.Router("/updatesession", &controllers.MesssageController{}, "POST:UpdateSessionInfo")
 }

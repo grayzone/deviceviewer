@@ -130,14 +130,14 @@ func (c *MesssageController) Generate() {
 		//		beego.Debug("MessageID", rs.MessageID)
 		rs.Sequence = byte(c.GetString("sequence")[0])
 		//		beego.Debug("Sequence", c.GetString("sequence"), []byte(c.GetString("sequence")))
-		log.Println(c.GetString("deviceid"))
+
 		deviceid, _ := strconv.ParseUint(c.GetString("deviceid"), 16, 32)
-		log.Println(deviceid)
+
 		rs.DeviceID = uint32(deviceid)
-		beego.Debug("DeviceID", rs.DeviceID)
+
 		protocalver, _ := c.GetInt32("protocolver")
 		rs.ProtocolVersion = uint32(protocalver)
-		beego.Debug("ProtocolVersion", rs.ProtocolVersion)
+
 		rs.NoAck = true
 
 		out := rs.Message()
@@ -202,6 +202,21 @@ func (c *MesssageController) Generate() {
 
 		}
 	*/
+}
+
+func (c *MesssageController) UpdateSessionInfo() {
+
+	var s conn.Setting
+	s.GetSetting()
+	result := make(map[string]string)
+
+	result["sessionkey"] = string(s.Sessionkey)
+	result["sequence"] = string(s.Sequence)
+
+	js, _ := json.Marshal(result)
+
+	c.Ctx.WriteString(string(js))
+
 }
 
 func IncreaseSeq(seq byte) byte {

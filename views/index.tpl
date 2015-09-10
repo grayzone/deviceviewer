@@ -7,16 +7,15 @@
     <script type="text/javascript" src="../static/js/func.js"></script>
   </head>
   <body>
-    <div>
+    <div hidden>
     <a>Serial:</a>
     <button id="btnopenserial">Open</button>
     <button id="btncloseserial">Close</button><br>
+    <a>Send Message</a>
+    <button id="btnstart">Start</button>
+    <button id="btnstop">Stop</button><br>
     </div>
-    <div>
-      <a>Send Message</a>
-          <button id="btnstart">Start</button>
-          <button id="btnstop">Stop</button><br>
-    </div>
+
     <div>
       <a>Request</a><br>
       <a>Device ID:</a>
@@ -31,7 +30,6 @@
         <option value="10024">Triad</option>
         <option value="10025" selected="true">Test</option>
       </select>
-      <br>
       <select name="messageid" id="messageid">
         <option value="11">RequestSession</option>
         <option value="00">KeepAlive</option>
@@ -39,14 +37,15 @@
         <option value="1D">DeviceNameRequest</option>
         <option value="5A">GetVersionsRequest</option>
       </select>
-      
+      <button id="btngenerate">Generate</button><br>
+
       <a>Session Key:</a><input type="text" name="sessionkey" id="sessionkey" value="FF">
       <a>Sequence Number:</a><input type="text" name="sequence" id="sequence" value="0">
-      
-      
-      
-      <button id="btngenerate">Generate</button>
-      <button id="btnkeepalive">KeepAlive</button><br>
+           
+      <button id="btnkeepalive" hidden>KeepAlive</button>
+      <button id="btnupdatesession" >Update</button>
+      <br>
+
       <textarea rows = "8" cols="100" id="tainput"></textarea><button id="btnSend">Send</button><br>
       <textarea rows = "8" cols="100" id="taoutput">024646313132303020202020202020202952402020202020202020235a202020202f48202020202320202020202020202020204537303703</textarea>
       <button id="btnParse">Parse</button><br>

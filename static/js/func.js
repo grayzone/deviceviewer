@@ -211,5 +211,29 @@ $(document).ready(function() {
 
     });
 
+    $("#btnupdatesession").click(function() {
+        $.ajax({
+                url: '/updatesession',
+                type: 'POST',
+                async: false,
+                data: {
+                   
+                },
+            })
+            .done(function(output) {
+                result = jQuery.parseJSON(output);
+                $("#sessionkey").val(result["sessionkey"]);
+                $("#sequence").val(result["sequence"]);
+
+            })
+            .fail(function() {
+                console.log("error");
+            })
+            .always(function() {
+                console.log("complete");
+            });
+
+    });
+
 
 });
