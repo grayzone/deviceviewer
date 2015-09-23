@@ -204,7 +204,7 @@ func (c *MesssageController) Generate() {
 	*/
 }
 
-func (c *MesssageController) UpdateSessionInfo() {
+func (c *MesssageController) UpdateSetting() {
 
 	var s conn.Setting
 	s.GetSetting()
@@ -212,6 +212,14 @@ func (c *MesssageController) UpdateSessionInfo() {
 
 	result["sessionkey"] = string(s.Sessionkey)
 	result["sequence"] = string(s.Sequence)
+
+	result["deviceid"] = strconv.Itoa(int(s.Deviceid))
+	result["protocolver"] = s.Protocolver
+	result["sessionstatus"] = strconv.Itoa(int(s.Sessionstatus))
+	result["sessiontimeout"] = strconv.Itoa(int(s.Sessiontimeout))
+	result["messagetimeout"] = strconv.Itoa(int(s.Messagetimeout))
+	result["maxretrycount"] = strconv.Itoa(int(s.Maxretrycount))
+	result["devicename"] = s.Devicename
 
 	js, _ := json.Marshal(result)
 

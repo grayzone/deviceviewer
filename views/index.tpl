@@ -43,7 +43,7 @@
       <a>Sequence Number:</a><input type="text" name="sequence" id="sequence" value="0">
            
       <button id="btnkeepalive" hidden>KeepAlive</button>
-      <button id="btnupdatesession" >Update</button>
+      <button id="btnupdatesetting" >Update</button>
       <br>
 
       <textarea rows = "8" cols="100" id="tainput"></textarea><button id="btnSend">Send</button><br>
@@ -63,6 +63,7 @@
       <a>Session Timeout:</a><input type="text" name="response_sessiontimeout" id="response_sessiontimeout" readonly="true"><br>
       <a>Message Timeout:</a><input type="text" name="response_messagetimeout" id="response_messagetimeout" readonly="true"><br>
       <a>Max Retry Count:</a><input type="text" name="response_maxretrycount" id="response_maxretrycount" readonly="true"><br>
+      <a>Device Name:</a><input type="text" name="response_devicename" id="response_devicename" readonly="true"><br>
       
     </div>
   </body>

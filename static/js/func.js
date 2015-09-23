@@ -142,6 +142,30 @@ $(document).ready(function() {
 
     });
 
+        $("#btnrequestsession").click(function() {
+        $.ajax({
+                url: '/requestsession',
+                type: 'POST',
+                async: false,
+                data: {
+                    "sessionkey": $("#sessionkey").val(),
+                    "sequence": $("#sequence").val(),
+                    "deviceid": $("#deviceid").val(),
+                    "protocolver": $("#protocolver").val(),
+                },
+            })
+            .done(function(output) {
+                $("#response_reason").val(output);
+            })
+            .fail(function() {
+                console.log("error");
+            })
+            .always(function() {
+                console.log("complete");
+            });
+
+    });
+
         $("#btnkeepalive").click(function() {
         //      input = $("#tainput").val();
         $.ajax({
@@ -211,9 +235,9 @@ $(document).ready(function() {
 
     });
 
-    $("#btnupdatesession").click(function() {
+    $("#btnupdatesetting").click(function() {
         $.ajax({
-                url: '/updatesession',
+                url: '/updatesetting',
                 type: 'POST',
                 async: false,
                 data: {
@@ -224,6 +248,16 @@ $(document).ready(function() {
                 result = jQuery.parseJSON(output);
                 $("#sessionkey").val(result["sessionkey"]);
                 $("#sequence").val(result["sequence"]);
+                $("#response_sessionkey").val(result["sessionkey"]);
+                $("#response_sequence").val(result["sequence"]);
+                $("#response_messageid").val(result["messageid"]);
+                $("#response_deviceid").val(result["deviceid"]);
+                $("#response_protocolver").val(result["protocolver"]);
+                $("#response_sessionstatus").val(result["sessionstatus"]);
+                $("#response_sessiontimeout").val(result["sessiontimeout"]);
+                $("#response_messagetimeout").val(result["messagetimeout"]);
+                $("#response_maxretrycount").val(result["maxretrycount"]);
+                $("#response_devicename").val(result["devicename"]);
 
             })
             .fail(function() {

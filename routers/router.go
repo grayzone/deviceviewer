@@ -19,5 +19,6 @@ func init() {
 
 	beego.Router("/keepalive", &controllers.MesssageController{}, "POST:KeepAlive")
 
-	beego.Router("/updatesession", &controllers.MesssageController{}, "POST:UpdateSessionInfo")
+	beego.Router("/updatesetting", &controllers.MesssageController{}, "POST:UpdateSetting")
+
 }
