@@ -118,17 +118,24 @@ func (c *MesssageController) Parse() {
 
 func (c *MesssageController) Generate() {
 	messageid, _ := strconv.ParseInt(c.GetString("messageid"), 16, 64)
+	var setting conn.Setting
+	setting.GetSetting()
+
 	switch messageid {
 	case ftprotocol.REQUESTSESSION:
 		var rs ftprotocol.RequestSession
 		//	rs.SessionKey, _ = hex.DecodeString(c.GetString("sessionkey"))
 
-		rs.SessionKey = []byte(strings.ToUpper(c.GetString("sessionkey")))
+		//	rs.SessionKey = []byte(strings.ToUpper(c.GetString("sessionkey")))
+		rs.SessionKey = []byte(strings.ToUpper(setting.Sessionkey))
+
 		//	beego.Debug("SessionKey", rs.SessionKey)
 		//	rs.MessageID, _ = hex.DecodeString(c.GetString("messageid"))
 		rs.MessageID = []byte(strings.ToUpper(c.GetString("messageid")))
 		//		beego.Debug("MessageID", rs.MessageID)
-		rs.Sequence = byte(c.GetString("sequence")[0])
+		//		rs.Sequence = byte(c.GetString("sequence")[0])
+		rs.Sequence = byte(setting.Sequence[0])
+
 		//		beego.Debug("Sequence", c.GetString("sequence"), []byte(c.GetString("sequence")))
 
 		deviceid, _ := strconv.ParseUint(c.GetString("deviceid"), 16, 32)
@@ -144,12 +151,34 @@ func (c *MesssageController) Generate() {
 		//		beego.Debug(out)
 		c.Ctx.WriteString(hex.EncodeToString(out))
 
+	case ftprotocol.GETSENSOR:
+		var g ftprotocol.GetSensor
+
+		g.SessionKey = []byte(strings.ToUpper(setting.Sessionkey))
+		g.MessageID = []byte(strings.ToUpper(c.GetString("messageid")))
+		g.Sequence = byte(setting.Sequence[0])
+
+		g.IsBroadcast, _ = c.GetBool("bbroadcastperiod")
+
+		bpvalue, _ := c.GetInt32("broadcastperiodvalue")
+		g.Broadcastperiod = uint32(bpvalue)
+		g.IsAllSensorData, _ = c.GetBool("isallsensordata")
+
+		//		log.Printf("%v, %d, %v", g.IsBroadcast, g.Broadcastperiod, g.IsAllSensorData)
+
+		out := g.Message()
+		c.Ctx.WriteString(hex.EncodeToString(out))
+
 	case ftprotocol.KEEPALIVE:
 		var ka ftprotocol.KeepAlive
-
-		ka.SessionKey = []byte(strings.ToUpper(c.GetString("sessionkey")))
-		ka.Sequence = byte(c.GetString("sequence")[0])
+		/*
+			ka.SessionKey = []byte(strings.ToUpper(c.GetString("sessionkey")))
+			ka.Sequence = byte(c.GetString("sequence")[0])
+			ka.MessageID = []byte(strings.ToUpper(c.GetString("messageid")))
+		*/
+		ka.SessionKey = []byte(strings.ToUpper(setting.Sessionkey))
 		ka.MessageID = []byte(strings.ToUpper(c.GetString("messageid")))
+		ka.Sequence = byte(setting.Sequence[0])
 
 		out := ka.Message()
 		//      beego.Debug(out)
@@ -157,27 +186,42 @@ func (c *MesssageController) Generate() {
 
 	case ftprotocol.GETRUNTIME:
 		var g ftprotocol.GetRunTime
-		g.SessionKey = []byte(strings.ToUpper(c.GetString("sessionkey")))
-		g.Sequence = byte(c.GetString("sequence")[0])
+		/*
+			g.SessionKey = []byte(strings.ToUpper(c.GetString("sessionkey")))
+			g.Sequence = byte(c.GetString("sequence")[0])
+			g.MessageID = []byte(strings.ToUpper(c.GetString("messageid")))
+		*/
+		g.SessionKey = []byte(strings.ToUpper(setting.Sessionkey))
 		g.MessageID = []byte(strings.ToUpper(c.GetString("messageid")))
+		g.Sequence = byte(setting.Sequence[0])
 
 		out := g.Message()
 		//      beego.Debug(out)
 		c.Ctx.WriteString(hex.EncodeToString(out))
 	case ftprotocol.DEVICENAMEREQUEST:
 		var g ftprotocol.DeviceNameRequest
-		g.SessionKey = []byte(strings.ToUpper(c.GetString("sessionkey")))
-		g.Sequence = byte(c.GetString("sequence")[0])
+		/*
+			g.SessionKey = []byte(strings.ToUpper(c.GetString("sessionkey")))
+			g.Sequence = byte(c.GetString("sequence")[0])
+			g.MessageID = []byte(strings.ToUpper(c.GetString("messageid")))
+		*/
+		g.SessionKey = []byte(strings.ToUpper(setting.Sessionkey))
 		g.MessageID = []byte(strings.ToUpper(c.GetString("messageid")))
+		g.Sequence = byte(setting.Sequence[0])
 
 		out := g.Message()
 		//      beego.Debug(out)
 		c.Ctx.WriteString(hex.EncodeToString(out))
 	case ftprotocol.GETVERSIONSREQUEST:
 		var g ftprotocol.GetVersionsRequest
-		g.SessionKey = []byte(strings.ToUpper(c.GetString("sessionkey")))
-		g.Sequence = byte(c.GetString("sequence")[0])
+		/*
+			g.SessionKey = []byte(strings.ToUpper(c.GetString("sessionkey")))
+			g.Sequence = byte(c.GetString("sequence")[0])
+			g.MessageID = []byte(strings.ToUpper(c.GetString("messageid")))
+		*/
+		g.SessionKey = []byte(strings.ToUpper(setting.Sessionkey))
 		g.MessageID = []byte(strings.ToUpper(c.GetString("messageid")))
+		g.Sequence = byte(setting.Sequence[0])
 
 		out := g.Message()
 		//      beego.Debug(out)
@@ -220,6 +264,7 @@ func (c *MesssageController) UpdateSetting() {
 	result["messagetimeout"] = strconv.Itoa(int(s.Messagetimeout))
 	result["maxretrycount"] = strconv.Itoa(int(s.Maxretrycount))
 	result["devicename"] = s.Devicename
+	result["sensorbroadcastperiod"] = strconv.Itoa(int(s.Sensorbroadcastperiod))
 
 	js, _ := json.Marshal(result)
 

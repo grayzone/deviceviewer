@@ -2,91 +2,79 @@ $(document).ready(function() {
 
     $("#btnstart").click(function() {
         $.ajax({
-                url: '/issend',
-                type: 'POST',
-                async: false,
-                //            dataType: 'default: Intelligent Guess (Other values: xml, json, script, or html)',
-                data: {
-                   "issend":true
-                },
-            })
-            .done(function(output) {
-     //           alert(output);
-            })
-            .fail(function() {
-                console.log("error");
-            })
-            .always(function() {
-                console.log("complete");
-            });
+            url: '/issend',
+            type: 'POST',
+            async: false,
+            //            dataType: 'default: Intelligent Guess (Other values: xml, json, script, or html)',
+            data: {
+                "issend": true
+            },
+        }).done(function(output) {
+            //           alert(output);
+        }).fail(function() {
+            console.log("error");
+        }).always(function() {
+            console.log("complete");
+        });
 
     });
 
     $("#btnstop").click(function() {
         $.ajax({
-                url: '/issend',
-                type: 'POST',
-                async: false,
-                //            dataType: 'default: Intelligent Guess (Other values: xml, json, script, or html)',
-                data: {
-                    "issend":false
-                   
-                },
-            })
-            .done(function(output) {
-     //           alert(output);
-            })
-            .fail(function() {
-                console.log("error");
-            })
-            .always(function() {
-                console.log("complete");
-            });
+            url: '/issend',
+            type: 'POST',
+            async: false,
+            //            dataType: 'default: Intelligent Guess (Other values: xml, json, script, or html)',
+            data: {
+                "issend": false
+
+            },
+        }).done(function(output) {
+            //           alert(output);
+        }).fail(function() {
+            console.log("error");
+        }).always(function() {
+            console.log("complete");
+        });
 
     });
 
-        $("#btnopenserial").click(function() {
+    $("#btnopenserial").click(function() {
         input = $("#tainput").val();
         $.ajax({
-                url: '/openserial',
-                type: 'POST',
-                async: false,
-                //            dataType: 'default: Intelligent Guess (Other values: xml, json, script, or html)',
-                data: {
-                   
-                },
-            })
-            .done(function(output) {
-     //           alert(output);
-            })
-            .fail(function() {
-                console.log("error");
-            })
-            .always(function() {
-                console.log("complete");
-            });
+            url: '/openserial',
+            type: 'POST',
+            async: false,
+            //            dataType: 'default: Intelligent Guess (Other values: xml, json, script, or html)',
+            data: {
+
+            },
+        }).done(function(output) {
+            //           alert(output);
+        }).fail(function() {
+            console.log("error");
+        }).always(function() {
+            console.log("complete");
+        });
 
     });
-            $("#btncloseserial").click(function() {
+    $("#btncloseserial").click(function() {
         input = $("#tainput").val();
         $.ajax({
-                url: '/closeserial',
-                type: 'POST',
-                async: false,
-                //            dataType: 'default: Intelligent Guess (Other values: xml, json, script, or html)',
-                data: {
-                   
-                },
-            })
-            .done(function(output) {
-       //         alert(output);
-            })
-            .fail(function() {
-                console.log("error");
-            })
-            .always(function() {
-                console.log("complete");
-            });
+            url: '/closeserial',
+            type: 'POST',
+            async: false,
+            //            dataType: 'default: Intelligent Guess (Other values: xml, json, script, or html)',
+            data: {
+
+            },
+        }).done(function(output) {
+            //         alert(output);
+        }).fail(function() {
+            console.log("error");
+        }).always(function() {
+            console.log("complete");
+        });
 
     });
 
@@ -94,23 +82,20 @@ $(document).ready(function() {
         input = $("#tainput").val();
         input = input.replace(/\s+/g, '');
         $.ajax({
-                url: '/send',
-                type: 'POST',
-                async: false,
-                //            dataType: 'default: Intelligent Guess (Other values: xml, json, script, or html)',
-                data: {
-                    "input": input
-                },
-            })
-            .done(function(output) {
-                $("#taoutput").val(output);
-            })
-            .fail(function() {
-                console.log("error");
-            })
-            .always(function() {
-                console.log("complete");
-            });
+            url: '/send',
+            type: 'POST',
+            async: false,
+            //            dataType: 'default: Intelligent Guess (Other values: xml, json, script, or html)',
+            data: {
+                "input": input
+            },
+        }).done(function(output) {
+            $("#taoutput").val(output);
+        }).fail(function() {
+            console.log("error");
+        }).always(function() {
+            console.log("complete");
+        });
 
     });
 
@@ -119,153 +104,99 @@ $(document).ready(function() {
     $("#btngenerate").click(function() {
         //      input = $("#tainput").val();
         $.ajax({
-                url: '/generate',
-                type: 'POST',
-                async: false,
-                data: {
-                    "messageid": $("#messageid").val(),
-                    "sessionkey": $("#sessionkey").val(),
-                    "sequence": $("#sequence").val(),
-                    "deviceid": $("#deviceid").val(),
-                    "protocolver": $("#protocolver").val(),
-                },
-            })
-            .done(function(output) {
-                $("#tainput").val(output);
-            })
-            .fail(function() {
-                console.log("error");
-            })
-            .always(function() {
-                console.log("complete");
-            });
+            url: '/generate',
+            type: 'POST',
+            async: false,
+            data: {
+                "messageid": $("#messageid").val(),
+                "sessionkey": $("#sessionkey").val(),
+                "sequence": $("#sequence").val(),
+                "deviceid": $("#deviceid").val(),
+                "protocolver": $("#protocolver").val(),
+                "bbroadcastperiod" : $('#cbbroadcastperiod').is(":checked"),
+                "broadcastperiodvalue":$("#tbroadcastperiod").val(),
+                "isallsensordata":$('#cballsensordata').is(":checked"),
+            },
+        }).done(function(output) {
+            $("#tainput").val(output);
+        }).fail(function() {
+            console.log("error");
+        }).always(function() {
+            console.log("complete");
+        });
 
     });
 
-        $("#btnrequestsession").click(function() {
-        $.ajax({
-                url: '/requestsession',
-                type: 'POST',
-                async: false,
-                data: {
-                    "sessionkey": $("#sessionkey").val(),
-                    "sequence": $("#sequence").val(),
-                    "deviceid": $("#deviceid").val(),
-                    "protocolver": $("#protocolver").val(),
-                },
-            })
-            .done(function(output) {
-                $("#response_reason").val(output);
-            })
-            .fail(function() {
-                console.log("error");
-            })
-            .always(function() {
-                console.log("complete");
-            });
-
-    });
-
-        $("#btnkeepalive").click(function() {
-        //      input = $("#tainput").val();
-        $.ajax({
-                url: '/keepalive',
-                type: 'POST',
-                async: false,
-                data: {
-       //             "messageid": $("#messageid").val(),
-       //             "sessionkey": $("#sessionkey").val(),
-       //             "sequence": $("#sequence").val(),
-       //             "deviceid": $("#deviceid").val(),
-//                    "protocolver": $("#protocolver").val(),
-                },
-            })
-            .done(function(output) {
-                $("#response_reason").val(output);
-            })
-            .fail(function() {
-                console.log("error");
-            })
-            .always(function() {
-                console.log("complete");
-            });
-
-    });
 
     $("#btnParse").click(function() {
-              input = $("#taoutput").val();
-              input = input.replace(/\s+/g, '');
+        input = $("#taoutput").val();
+        input = input.replace(/\s+/g, '');
         $.ajax({
-                url: '/parse',
-                type: 'POST',
-                async: false,
-                data: {
-                    "response": input
-                },
-            })
-            .done(function(output) {
-                result = jQuery.parseJSON(output);
-  //              alert(output);
-//                alert(result);
+            url: '/parse',
+            type: 'POST',
+            async: false,
+            data: {
+                "response": input
+            },
+        }).done(function(output) {
+            result = jQuery.parseJSON(output);
+            //              alert(output);
+            //                alert(result);
 
-                $("#response_reason").val(result["reason"]);
-                $("#response_sessionkey").val(result["sessionkey"]);
-                $("#response_sequence").val(result["sequence"]);
-                $("#response_messageid").val(result["messageid"]);
-                $("#response_deviceid").val(result["deviceid"]);
-                $("#response_protocolver").val(result["protocolver"]);
-                $("#response_sessionstatus").val(result["sessionstatus"]);
-                $("#response_sessiontimeout").val(result["sessiontimeout"]);
-                $("#response_messagetimeout").val(result["messagetimeout"]);
-                $("#response_maxretrycount").val(result["maxretrycount"]);
+            $("#response_reason").val(result["reason"]);
 
-                $("#sessionkey").val(result["sessionkey"]);
-                $("#sequence").val(result["sequence"]);
+            $("#response_messageid").val(result["messageid"]);
+            $("#response_deviceid").val(result["deviceid"]);
+            $("#response_protocolver").val(result["protocolver"]);
+            $("#response_sessionstatus").val(result["sessionstatus"]);
+            $("#response_sessiontimeout").val(result["sessiontimeout"]);
+            $("#response_messagetimeout").val(result["messagetimeout"]);
+            $("#response_maxretrycount").val(result["maxretrycount"]);
+
+            $("#sessionkey").val(result["sessionkey"]);
+            $("#sequence").val(result["sequence"]);
 
 
 
-                //        $("#tainput").val(output);
-            })
-            .fail(function() {
-                console.log("error");
-            })
-            .always(function() {
-                console.log("complete");
-            });
+            //        $("#tainput").val(output);
+        }).fail(function() {
+            console.log("error");
+        }).always(function() {
+            console.log("complete");
+        });
 
     });
 
     $("#btnupdatesetting").click(function() {
         $.ajax({
-                url: '/updatesetting',
-                type: 'POST',
-                async: false,
-                data: {
-                   
-                },
-            })
-            .done(function(output) {
-                result = jQuery.parseJSON(output);
-                $("#sessionkey").val(result["sessionkey"]);
-                $("#sequence").val(result["sequence"]);
-                $("#response_sessionkey").val(result["sessionkey"]);
-                $("#response_sequence").val(result["sequence"]);
-                $("#response_messageid").val(result["messageid"]);
-                $("#response_deviceid").val(result["deviceid"]);
-                $("#response_protocolver").val(result["protocolver"]);
-                $("#response_sessionstatus").val(result["sessionstatus"]);
-                $("#response_sessiontimeout").val(result["sessiontimeout"]);
-                $("#response_messagetimeout").val(result["messagetimeout"]);
-                $("#response_maxretrycount").val(result["maxretrycount"]);
-                $("#response_devicename").val(result["devicename"]);
+            url: '/updatesetting',
+            type: 'POST',
+            async: false,
+            data: {
 
-            })
-            .fail(function() {
-                console.log("error");
-            })
-            .always(function() {
-                console.log("complete");
-            });
+            },
+        }).done(function(output) {
+            result = jQuery.parseJSON(output);
+            $("#sessionkey").val(result["sessionkey"]);
+            $("#sequence").val(result["sequence"]);
+
+            $("#tbroadcastperiod").val(result["sensorbroadcastperiod"]);
+
+
+            $("#response_messageid").val(result["messageid"]);
+            $("#response_deviceid").val(result["deviceid"]);
+            $("#response_protocolver").val(result["protocolver"]);
+            $("#response_sessionstatus").val(result["sessionstatus"]);
+            $("#response_sessiontimeout").val(result["sessiontimeout"]);
+            $("#response_messagetimeout").val(result["messagetimeout"]);
+            $("#response_maxretrycount").val(result["maxretrycount"]);
+            $("#response_devicename").val(result["devicename"]);
+
+        }).fail(function() {
+            console.log("error");
+        }).always(function() {
+            console.log("complete");
+        });
 
     });
 

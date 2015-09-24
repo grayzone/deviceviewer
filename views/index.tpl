@@ -36,26 +36,35 @@
         <option value="2D">GetRunTime</option>
         <option value="1D">DeviceNameRequest</option>
         <option value="5A">GetVersionsRequest</option>
+        <option value="3B">GetSensor</option>
       </select>
-      <button id="btngenerate">Generate</button><br>
+       <br>
 
       <a>Session Key:</a><input type="text" name="sessionkey" id="sessionkey" value="FF">
       <a>Sequence Number:</a><input type="text" name="sequence" id="sequence" value="0">
-           
-      <button id="btnkeepalive" hidden>KeepAlive</button>
-      <button id="btnupdatesetting" >Update</button>
       <br>
 
-      <textarea rows = "8" cols="100" id="tainput"></textarea><button id="btnSend">Send</button><br>
+      <a>Sensor Broadcast Period</a>
+      <input type="checkbox" name="cbbroadcastperiod" id="cbbroadcastperiod" checked>
+      <input type="text" name="tbroadcastperiod" id="tbroadcastperiod" value="100">
+      <a>All sensor data:</a><input type="checkbox" name="cballsensordata" id="cballsensordata" checked>
+      <br>
+
+      <button id="btngenerate">Generate</button>
+      <button id="btnSend">Send</button><br>
+
+
+      <textarea rows = "8" cols="100" id="tainput"></textarea>
+      </div>
+      <div hidden>
       <textarea rows = "8" cols="100" id="taoutput">024646313132303020202020202020202952402020202020202020235a202020202f48202020202320202020202020202020204537303703</textarea>
       <button id="btnParse">Parse</button><br>
 
     </div>
     <div>
+    <button id="btnupdatesetting" >Update</button><br>
       <a>Response:reason<input type="text" name="response_reason" id="response_reason" readonly="true"></a><br>
 
-      <a>Session Key:</a><input type="text" name="response_sessionkey" id="response_sessionkey" readonly="true"><br>
-      <a>Sequence Number:</a><input type="text" name="response_sequence" id="response_sequence" readonly="true"><br>
       <a>Message ID:</a><input type="text" name="response_messageid" id="response_messageid" readonly="true"><br>
       <a>Device ID:</a><input type="text" name="response_deviceid" id="response_deviceid" readonly="true"><br>
       <a>Protocal Version:</a><input type="text" name="response_protocolver" id="response_protocolver" readonly="true"><br>
