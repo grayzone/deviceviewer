@@ -4,6 +4,7 @@
     <title>Device Viewer</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <script type="text/javascript" src="../static/js/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="../static/js/highcharts-custom.js"></script>
     <script type="text/javascript" src="../static/js/func.js"></script>
   </head>
   <body>
@@ -46,8 +47,8 @@
 
       <a>Sensor Broadcast Period</a>
       <input type="checkbox" name="cbbroadcastperiod" id="cbbroadcastperiod" checked>
-      <input type="text" name="tbroadcastperiod" id="tbroadcastperiod" value="100">
-      <a>All sensor data:</a><input type="checkbox" name="cballsensordata" id="cballsensordata" checked>
+      <input type="text" name="tbroadcastperiod" id="tbroadcastperiod" value="0">
+      <a>All sensor data:</a><input type="checkbox" name="cballsensordata" id="cballsensordata">
       <br>
 
       <button id="btngenerate">Generate</button>
@@ -74,6 +75,9 @@
       <a>Max Retry Count:</a><input type="text" name="response_maxretrycount" id="response_maxretrycount" readonly="true"><br>
       <a>Device Name:</a><input type="text" name="response_devicename" id="response_devicename" readonly="true"><br>
       
+    </div>
+
+    <div id="container" style="width:100%;height:300px;">
     </div>
   </body>
 </html>

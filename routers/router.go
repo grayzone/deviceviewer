@@ -19,4 +19,6 @@ func init() {
 
 	beego.Router("/updatesetting", &controllers.MesssageController{}, "POST:UpdateSetting")
 
+	beego.Router("/getsensordata", &controllers.SensorDataController{}, "POST:GetSensorData")
+
 }

@@ -395,3 +395,28 @@ func (c *MesssageController) KeepAlive() {
 	c.Ctx.WriteString("done.")
 
 }
+
+type SensorDataController struct {
+	beego.Controller
+}
+
+func (c *SensorDataController) GetSensorData() {
+
+	var s conn.Sensordata
+
+	s.GetSensordata()
+	//	s.GetSetting()
+	result := make(map[string]string)
+
+	result["vavg"] = strconv.FormatFloat(float64(s.Vavg), 'E', -1, 64)
+	result["iavg"] = strconv.FormatFloat(float64(s.Iavg), 'E', -1, 64)
+	result["zload"] = strconv.FormatFloat(float64(s.Zload), 'E', -1, 64)
+	result["icf"] = strconv.FormatFloat(float64(s.Icf), 'E', -1, 64)
+	result["t2"] = strconv.FormatFloat(float64(s.T2), 'E', -1, 64)
+	result["time"] = strconv.FormatInt(s.Createtime.UnixNano(), 10)
+
+	js, _ := json.Marshal(result)
+
+	c.Ctx.WriteString(string(js))
+
+}
