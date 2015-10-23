@@ -62,7 +62,7 @@
       <button id="btnParse">Parse</button><br>
 
     </div>
-    <div>
+    <div hidden>
     <button id="btnupdatesetting" >Update</button><br>
       <a>Response:reason<input type="text" name="response_reason" id="response_reason" readonly="true"></a><br>
 

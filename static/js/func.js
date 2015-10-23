@@ -273,6 +273,7 @@ $(document).ready(function() {
                 text: 'Vavg'
             },
             height: '20%',
+            offset: 0,
             lineWidth: 1
         }, {
             title: {
