@@ -226,6 +226,29 @@ func (c *MesssageController) Generate() {
 		out := g.Message()
 		//      beego.Debug(out)
 		c.Ctx.WriteString(hex.EncodeToString(out))
+	case ftprotocol.SCREENPRESS:
+		var g ftprotocol.ScreenPress
+
+		g.SessionKey = []byte(strings.ToUpper(setting.Sessionkey))
+		g.MessageID = []byte(strings.ToUpper(c.GetString("messageid")))
+		g.Sequence = byte(setting.Sequence[0])
+
+		screenid, _ := c.GetInt32("screenid")
+		g.ScreenID = uint32(screenid)
+
+		coorx, _ := c.GetInt32("coorx")
+		g.X = uint32(coorx)
+
+		coory, _ := c.GetInt32("coory")
+		g.Y = uint32(coory)
+
+		log.Println(g)
+
+		out := g.Message()
+
+		log.Println(out)
+
+		c.Ctx.WriteString(hex.EncodeToString(out))
 
 	default:
 		c.Ctx.WriteString("Invalid Message")
@@ -393,6 +416,52 @@ func (c *MesssageController) KeepAlive() {
 	}
 
 	c.Ctx.WriteString("done.")
+
+}
+
+func (c *MesssageController) SendPwdKey() {
+
+	messageid := ftprotocol.SCREENPRESS
+	var setting conn.Setting
+	setting.GetSetting()
+
+	switch messageid {
+	case ftprotocol.SCREENPRESS:
+		var g ftprotocol.ScreenPress
+
+		g.SessionKey = []byte(strings.ToUpper(setting.Sessionkey))
+		g.MessageID = []byte(strings.ToUpper(c.GetString("messageid")))
+		g.Sequence = byte(setting.Sequence[0])
+
+		screenid, _ := c.GetInt32("screenid")
+		g.ScreenID = uint32(screenid)
+
+		coorx, _ := c.GetInt32("coorx")
+		g.X = uint32(coorx)
+
+		coory, _ := c.GetInt32("coory")
+		g.Y = uint32(coory)
+
+		//		log.Println(g)
+
+		out := g.Message()
+
+		//		log.Println(out)
+
+		var m conn.Message
+		m.Messagetype = conn.REQUEST
+		m.Info = hex.EncodeToString(out)
+		m.Status = conn.NONE
+		log.Println(m.Info)
+
+		m.InsertMessage()
+
+		c.Ctx.WriteString("ok")
+
+	default:
+		c.Ctx.WriteString("Invalid Message")
+
+	}
 
 }
 

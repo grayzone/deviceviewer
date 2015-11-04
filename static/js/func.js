@@ -1,5 +1,23 @@
 var chart;
 
+var bStartGetSensorData = false;
+
+function updateTextInputX(val) {
+    $("#textinputcoorx").val(val);
+}
+
+function updateTextInputY(val) {
+    $("#textinputcoory").val(val);
+}
+
+function updateRangeX(val) {
+    $("#rangecoorx").val(val);
+}
+
+function updateRangeY(val) {
+    $("#rangecoory").val(val);
+}
+
 function requestSensorData() {
     $.ajax({
         url: '/getsensordata',
@@ -28,11 +46,38 @@ function requestSensorData() {
             //      chart.series[3].addPoint([time, icf], true, shift);
             chart.series[3].addPoint([time, t2], true, shift);
 
-            setTimeout(requestSensorData, 1);
+            if (bStartGetSensorData == true) {
+                setTimeout(requestSensorData, 1);
+            }
         },
         cache: false
 
     });
+}
+
+function sendpwdkey(x, y) {
+    $.ajax({
+        url: '/sendpwdkey',
+        type: 'POST',
+        async: false,
+        data: {
+            "messageid": $("#messageid").val(),
+            "sessionkey": $("#sessionkey").val(),
+            "sequence": $("#sequence").val(),
+            "deviceid": $("#deviceid").val(),
+            "protocolver": $("#protocolver").val(),
+            "screenid": $("#screenid").val(),
+            "coorx": x,
+            "coory": y
+        },
+    }).done(function(output) {
+        $("#tainput").val(output);
+    }).fail(function() {
+        console.log("error");
+    }).always(function() {
+        console.log("complete");
+    });
+
 }
 
 
@@ -154,6 +199,9 @@ $(document).ready(function() {
                 "bbroadcastperiod": $('#cbbroadcastperiod').is(":checked"),
                 "broadcastperiodvalue": $("#tbroadcastperiod").val(),
                 "isallsensordata": $('#cballsensordata').is(":checked"),
+                "screenid": $("#screenid").val(),
+                "coorx": $("#textinputcoorx").val(),
+                "coory": $("#textinputcoory").val()
             },
         }).done(function(output) {
             $("#tainput").val(output);
@@ -164,6 +212,55 @@ $(document).ready(function() {
         });
 
     });
+
+
+
+    $("#btnpwdkey1").click(function() {
+        //      input = $("#tainput").val();
+
+        var coorx = 69;
+        var coory = 83;
+        sendpwdkey(coorx, coory);
+
+    });
+
+    $("#btnpwdkey2").click(function() {
+        //      input = $("#tainput").val();
+
+        var coorx = 129;
+        var coory = 83;
+        sendpwdkey(coorx, coory);
+
+    });
+
+    $("#btnpwdkey3").click(function() {
+        //      input = $("#tainput").val();
+
+        var coorx = 180;
+        var coory = 83;
+        sendpwdkey(coorx, coory);
+
+    });
+
+    $("#btnpwdkey4").click(function() {
+        //      input = $("#tainput").val();
+
+        var coorx = 236;
+        var coory = 84;
+        sendpwdkey(coorx, coory);
+
+    });
+
+    $("#btnpwdenter").click(function() {
+        //      input = $("#tainput").val();
+
+        var coorx = 263;
+        var coory = 208;
+        sendpwdkey(coorx, coory);
+
+    });
+
+
 
 
     $("#btnParse").click(function() {
@@ -331,5 +428,19 @@ $(document).ready(function() {
 
     };
 
-    chart = new Highcharts.Chart(options);
+    $("#btnStartGetSensorData").click(function() {
+
+        bStartGetSensorData = true;
+        chart = new Highcharts.Chart(options);
+
+    });
+
+    $("#btnStopGetSensorData").click(function() {
+
+        bStartGetSensorData = false;
+
+    });
+
+
+
 });

@@ -38,6 +38,7 @@
         <option value="1D">DeviceNameRequest</option>
         <option value="5A">GetVersionsRequest</option>
         <option value="3B">GetSensor</option>
+        <option value="62">ScreenPress</option>
       </select>
        <br>
 
@@ -49,6 +50,27 @@
       <input type="checkbox" name="cbbroadcastperiod" id="cbbroadcastperiod" checked>
       <input type="text" name="tbroadcastperiod" id="tbroadcastperiod" value="0">
       <a>All sensor data:</a><input type="checkbox" name="cballsensordata" id="cballsensordata">
+      <br>
+
+      <a>Screen Press</a>
+      <select name="screenid" id="screenid">
+        <option value="0">Left</option>
+        <option value="1">Middle</option>
+        <option value="2">Right</option>
+      </select>
+     
+      X:<input type="range" name="rangecoorx" id="rangecoorx" min="0" max="319" value ="0" onchange="updateTextInputX(this.value)">
+      <input type="number" id="textinputcoorx" min="0" max="319" value ="0" onchange="updateRangeX(this.value)">
+     
+      Y:<input type="range" name="rangecoory" id="rangecoory" min="0" max="239" value ="0" onchange="updateTextInputY(this.value)">
+      <input type="number" id="textinputcoory"min="0" max="239" value ="0" onchange="updateRangeY(this.value)">
+      <br>
+
+      <button id="btnpwdkey1">1</button>
+      <button id="btnpwdkey2">2</button>
+      <button id="btnpwdkey3">3</button>
+      <button id="btnpwdkey4">4</button>
+      <button id="btnpwdenter">enter</button>
       <br>
 
       <button id="btngenerate">Generate</button>
@@ -76,8 +98,14 @@
       <a>Device Name:</a><input type="text" name="response_devicename" id="response_devicename" readonly="true"><br>
       
     </div>
-
+    <div>
+    <a>Get Sensor Data:</a>
+       <button id="btnStartGetSensorData">Start</button>
+       <button id="btnStopGetSensorData">Stop</button><br>
+    </div>
     <div id="container" style="width:100%;height:300px;">
     </div>
+
+
   </body>
 </html>
